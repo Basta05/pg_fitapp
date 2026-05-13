@@ -1,25 +1,22 @@
 import eel
-from datetime import datetime, date, timedelta
 from . import db
+from .managers import WorkoutManager
+
+_workouts = WorkoutManager()
 
 
 @eel.expose
 def get_dashboard_stats():
-    workouts = db.read('workouts')
-    week_start = (date.today() - timedelta(days=date.today().weekday())).isoformat()
+    this_week = _workouts.get_this_week_count()
+    all_workouts = _workouts.get_all()
+    recent = sorted(all_workouts, key=lambda x: x['date'], reverse=True)[:5]
 
-    total = len(workouts)
-    this_week = len([w for w in workouts if w['date'] >= week_start])
-    recent = sorted(workouts, key=lambda x: x['date'], reverse=True)[:5]
-
-    metrics = db.read('body_metrics')
-    latest_weight = None
-    if metrics:
-        latest = sorted(metrics, key=lambda x: x['date'], reverse=True)[0]
-        latest_weight = latest.get('weight_kg')
+    from .managers import BodyMetricsManager
+    _metrics = BodyMetricsManager()
+    latest_weight = _metrics.get_latest_weight()
 
     return {
-        'total_workouts': total,
+        'total_workouts': len(all_workouts),
         'this_week': this_week,
         'recent_workouts': recent,
         'latest_weight': latest_weight,
@@ -28,133 +25,47 @@ def get_dashboard_stats():
 
 @eel.expose
 def get_workouts():
-    return sorted(db.read('workouts'), key=lambda x: x['date'], reverse=True)
+    return _workouts.get_sorted()
 
 
 @eel.expose
 def get_workout(workout_id):
-    workouts = db.read('workouts')
-    workout = next((w for w in workouts if w['id'] == workout_id), None)
-    if not workout:
-        return None
-    exercises = db.read('exercises')
-    ex_map = {e['id']: e for e in exercises}
-    for we in workout.get('exercises', []):
-        we['exercise'] = ex_map.get(we['exercise_id'], {})
-    return workout
+    return _workouts.get_with_exercises(workout_id)
 
 
 @eel.expose
 def create_workout(name, date_str, notes='', workout_type='custom', duration_minutes=None):
-    workouts = db.read('workouts')
-    new_id = db.next_id(workouts)
-    workout = {
-        'id': new_id,
-        'name': name,
-        'date': date_str,
-        'duration_minutes': duration_minutes,
-        'workout_type': workout_type,
-        'notes': notes,
-        'created_at': datetime.now().isoformat(),
-        'exercises': [],
-    }
-    workouts.append(workout)
-    db.write('workouts', workouts)
-    return workout
+    return _workouts.create(name, date_str, notes, workout_type, duration_minutes)
 
 
 @eel.expose
 def delete_workout(workout_id):
-    workouts = db.read('workouts')
-    db.write('workouts', [w for w in workouts if w['id'] != workout_id])
-    return True
+    return _workouts.delete_by_id(workout_id)
 
 
 @eel.expose
 def add_exercise_to_workout(workout_id, exercise_id):
-    workouts = db.read('workouts')
-    workout = next((w for w in workouts if w['id'] == workout_id), None)
-    if not workout:
-        return None
-    we = {
-        'id': db.next_exercise_id(),
-        'exercise_id': exercise_id,
-        'order': len(workout['exercises']),
-        'sets': [],
-    }
-    workout['exercises'].append(we)
-    db.write('workouts', workouts)
-    exercises = db.read('exercises')
-    ex_map = {e['id']: e for e in exercises}
-    we['exercise'] = ex_map.get(exercise_id, {})
-    return we
+    return _workouts.add_exercise(workout_id, exercise_id)
 
 
 @eel.expose
 def delete_exercise_from_workout(workout_id, we_id):
-    workouts = db.read('workouts')
-    workout = next((w for w in workouts if w['id'] == workout_id), None)
-    if not workout:
-        return False
-    workout['exercises'] = [e for e in workout['exercises'] if e['id'] != we_id]
-    db.write('workouts', workouts)
-    return True
+    return _workouts.remove_exercise(workout_id, we_id)
 
 
 @eel.expose
 def add_set(workout_id, we_id, reps=None, weight_kg=None, duration_seconds=None, notes=''):
-    workouts = db.read('workouts')
-    workout = next((w for w in workouts if w['id'] == workout_id), None)
-    if not workout:
-        return None
-    we = next((e for e in workout['exercises'] if e['id'] == we_id), None)
-    if not we:
-        return None
-    new_set = {
-        'id': db.next_set_id(),
-        'set_number': len(we['sets']) + 1,
-        'reps': int(reps) if reps not in (None, '') else None,
-        'weight_kg': float(weight_kg) if weight_kg not in (None, '') else None,
-        'duration_seconds': duration_seconds,
-        'notes': notes or '',
-    }
-    we['sets'].append(new_set)
-    db.write('workouts', workouts)
-    return new_set
+    return _workouts.add_set(workout_id, we_id, reps, weight_kg, duration_seconds, notes)
 
 
 @eel.expose
 def edit_set(workout_id, we_id, set_id, reps=None, weight_kg=None):
-    workouts = db.read('workouts')
-    workout = next((w for w in workouts if w['id'] == workout_id), None)
-    if not workout:
-        return None
-    we = next((e for e in workout['exercises'] if e['id'] == we_id), None)
-    if not we:
-        return None
-    s = next((s for s in we['sets'] if s['id'] == set_id), None)
-    if not s:
-        return None
-    if reps not in (None, ''):
-        s['reps'] = int(reps)
-    if weight_kg not in (None, ''):
-        s['weight_kg'] = float(weight_kg)
-    db.write('workouts', workouts)
-    return s
+    return _workouts.edit_set(workout_id, we_id, set_id, reps, weight_kg)
 
 
 @eel.expose
 def delete_set(workout_id, we_id, set_id):
-    workouts = db.read('workouts')
-    workout = next((w for w in workouts if w['id'] == workout_id), None)
-    if not workout:
-        return False
-    we = next((e for e in workout['exercises'] if e['id'] == we_id), None)
-    if not we:
-        return False
-    we['sets'] = [s for s in we['sets'] if s['id'] != set_id]
-    db.write('workouts', workouts)
-    return True
+    return _workouts.delete_set(workout_id, we_id, set_id)
 
 
 @eel.expose
@@ -177,30 +88,4 @@ def get_presets():
 
 @eel.expose
 def start_preset(preset_id):
-    presets = db.read('presets')
-    preset = next((p for p in presets if p['id'] == preset_id), None)
-    if not preset:
-        return None
-    workouts = db.read('workouts')
-    new_id = db.next_id(workouts)
-    exercises_list = []
-    for i, ex_id in enumerate(preset.get('exercise_ids', [])):
-        exercises_list.append({
-            'id': db.next_exercise_id() + i,
-            'exercise_id': ex_id,
-            'order': i,
-            'sets': [],
-        })
-    workout = {
-        'id': new_id,
-        'name': preset['name'],
-        'date': date.today().isoformat(),
-        'duration_minutes': None,
-        'workout_type': 'preset',
-        'notes': '',
-        'created_at': datetime.now().isoformat(),
-        'exercises': exercises_list,
-    }
-    workouts.append(workout)
-    db.write('workouts', workouts)
-    return workout
+    return _workouts.create_from_preset(preset_id)

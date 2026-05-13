@@ -1,75 +1,56 @@
 import eel
-from datetime import datetime
-from . import db
+from .managers import GoalManager, BodyMetricsManager, NutritionCalculator
+
+_goals = GoalManager()
+_metrics = BodyMetricsManager()
+_calculator = NutritionCalculator()
+
+
+def _active_goal_type():
+    active = [g for g in _goals.get_all() if g.get('is_active')]
+    if active:
+        return active[-1]['goal_type']
+    return 'maintain'
 
 
 @eel.expose
 def get_goals():
-    return db.read('goals')
+    return _goals.get_all()
 
 
 @eel.expose
 def add_goal(goal_type, description='', target_weight_kg=None, target_date=None):
-    goals = db.read('goals')
-    goal = {
-        'id': db.next_id(goals),
-        'goal_type': goal_type,
-        'target_weight_kg': float(target_weight_kg) if target_weight_kg not in (None, '') else None,
-        'target_date': target_date or None,
-        'description': description,
-        'is_active': True,
-        'created_at': datetime.now().isoformat(),
-    }
-    goals.append(goal)
-    db.write('goals', goals)
+    goal = _goals.add(goal_type, description, target_weight_kg, target_date)
+    calc = _calculator.calculate_and_save(goal_type)
+    goal['_macros_result'] = calc
     return goal
 
 
 @eel.expose
 def complete_goal(goal_id):
-    goals = db.read('goals')
-    goal = next((g for g in goals if g['id'] == goal_id), None)
-    if goal:
-        goal['is_active'] = False
-    db.write('goals', goals)
-    return True
+    return _goals.complete(goal_id)
 
 
 @eel.expose
 def get_body_metrics():
-    return sorted(db.read('body_metrics'), key=lambda x: x['date'], reverse=True)
+    return _metrics.get_sorted()
 
 
 @eel.expose
 def add_body_metrics(date_str, weight_kg=None, body_fat_pct=None,
                      chest_cm=None, waist_cm=None, hips_cm=None,
                      bicep_cm=None, thigh_cm=None, notes=''):
-    metrics = db.read('body_metrics')
+    result = _metrics.add_or_update(
+        date_str, weight_kg, body_fat_pct,
+        chest_cm, waist_cm, hips_cm,
+        bicep_cm, thigh_cm, notes,
+    )
+    calc = _calculator.calculate_and_save(_active_goal_type())
+    return {'saved': result, 'macros': calc}
 
-    def _f(v):
-        try:
-            return float(v) if v not in (None, '') else None
-        except (ValueError, TypeError):
-            return None
 
-    data = {
-        'date':         date_str,
-        'weight_kg':    _f(weight_kg),
-        'body_fat_pct': _f(body_fat_pct),
-        'chest_cm':     _f(chest_cm),
-        'waist_cm':     _f(waist_cm),
-        'hips_cm':      _f(hips_cm),
-        'bicep_cm':     _f(bicep_cm),
-        'thigh_cm':     _f(thigh_cm),
-        'notes':        notes or '',
-    }
-
-    existing = next((m for m in metrics if m['date'] == date_str), None)
-    if existing:
-        existing.update(data)
-    else:
-        data['id'] = db.next_id(metrics)
-        metrics.append(data)
-
-    db.write('body_metrics', metrics)
-    return True
+@eel.expose
+def recalculate_nutrition_goals(goal_type=None):
+    if goal_type is None:
+        goal_type = _active_goal_type()
+    return _calculator.calculate_and_save(goal_type)

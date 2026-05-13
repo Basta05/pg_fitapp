@@ -71,7 +71,7 @@ function showAlert(msg, type = 'success') {
 function getSidebarHTML() {
   return `
   <nav class="sidebar">
-    <div class="sidebar-logo">pg_<span>fit</span></div>
+    <div class="sidebar-logo">PG<span>-FitApp</span></div>
     <div class="sidebar-section">Hlavní</div>
     <a href="dashboard.html" class="nav-link-side" data-page="dashboard"><i class="bi bi-house"></i> Přehled</a>
     <div class="sidebar-section">Trénink</div>

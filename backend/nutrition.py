@@ -1,49 +1,23 @@
 import eel
 from . import db
+from .managers import NutritionManager
+
+_nutrition = NutritionManager()
 
 
 @eel.expose
 def get_food_log(date_str=None):
-    logs = db.read('food_log')
-    if date_str:
-        logs = [l for l in logs if l['date'] == date_str]
-    food_items = db.read('food_items')
-    food_map = {f['id']: f for f in food_items}
-    result = []
-    for log in logs:
-        item = food_map.get(log['food_item_id'], {})
-        factor = log['amount_grams'] / 100
-        result.append({
-            **log,
-            'food_name': item.get('name', ''),
-            'calories': round(item.get('calories_per_100g', 0) * factor, 1),
-            'protein':  round(item.get('protein_per_100g', 0) * factor, 1),
-            'carbs':    round(item.get('carbs_per_100g', 0) * factor, 1),
-            'fat':      round(item.get('fat_per_100g', 0) * factor, 1),
-        })
-    return sorted(result, key=lambda x: x['meal_type'])
+    return _nutrition.get_by_date(date_str)
 
 
 @eel.expose
 def add_food_log(food_item_id, date_str, meal_type, amount_grams):
-    logs = db.read('food_log')
-    entry = {
-        'id': db.next_id(logs),
-        'food_item_id': int(food_item_id),
-        'date': date_str,
-        'meal_type': meal_type,
-        'amount_grams': float(amount_grams),
-    }
-    logs.append(entry)
-    db.write('food_log', logs)
-    return entry
+    return _nutrition.add_entry(food_item_id, date_str, meal_type, amount_grams)
 
 
 @eel.expose
 def delete_food_log(log_id):
-    logs = db.read('food_log')
-    db.write('food_log', [l for l in logs if l['id'] != log_id])
-    return True
+    return _nutrition.delete_by_id(log_id)
 
 
 @eel.expose
@@ -88,10 +62,10 @@ def calculate_bmr(weight_kg, height_cm, age, gender):
 @eel.expose
 def calculate_tdee(bmr, activity_level):
     factors = {
-        'sedentary':  1.2,
-        'light':      1.375,
-        'moderate':   1.55,
-        'active':     1.725,
+        'sedentary':   1.2,
+        'light':       1.375,
+        'moderate':    1.55,
+        'active':      1.725,
         'very_active': 1.9,
     }
     return round(int(bmr) * factors.get(activity_level, 1.55))

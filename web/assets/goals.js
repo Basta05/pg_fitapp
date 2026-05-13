@@ -5,6 +5,17 @@
 
 /* ── goals.html ─────────────────────────────────────────────── */
 async function initGoalsPage() {
+  const flash = sessionStorage.getItem('macros_flash');
+  if (flash) {
+    sessionStorage.removeItem('macros_flash');
+    const data = JSON.parse(flash);
+    if (data.error) {
+      showAlert('Makra nebyla aktualizována — ' + data.error + '. Doplň údaje v Profilu.', 'warning');
+    } else {
+      showAlert('Nutriční makra byla automaticky aktualizována. Zkontroluj je v sekci Výživa.', 'success');
+    }
+  }
+
   const [goals, metrics] = await Promise.all([
     eel.get_goals()(),
     eel.get_body_metrics()(),
@@ -136,7 +147,7 @@ function initBodyMetricsForm() {
 async function submitBodyMetrics(event) {
   event.preventDefault();
   const f = event.target;
-  await eel.add_body_metrics(
+  const result = await eel.add_body_metrics(
     f.bmDate.value,
     f.bmWeight.value   || null,
     f.bmFat.value      || null,
@@ -147,18 +158,28 @@ async function submitBodyMetrics(event) {
     f.bmThigh.value    || null,
     f.bmNotes.value    || '',
   )();
-  window.location.href = 'body_metrics.html';
+  if (result?.macros?.error) {
+    sessionStorage.setItem('macros_flash', JSON.stringify({ error: result.macros.error }));
+  } else if (result?.macros) {
+    sessionStorage.setItem('macros_flash', JSON.stringify({ ok: true }));
+  }
+  window.location.href = 'goals.html';
 }
 
 /* ── goal_form.html ─────────────────────────────────────────── */
 async function submitGoal(event) {
   event.preventDefault();
   const f = event.target;
-  await eel.add_goal(
+  const goal = await eel.add_goal(
     f.goalType.value,
     f.goalDesc.value     || '',
     f.goalWeight.value   || null,
     f.goalDate.value     || null,
   )();
+  if (goal?._macros_result?.error) {
+    sessionStorage.setItem('macros_flash', JSON.stringify({ error: goal._macros_result.error }));
+  } else if (goal?._macros_result) {
+    sessionStorage.setItem('macros_flash', JSON.stringify({ ok: true }));
+  }
   window.location.href = 'goals.html';
 }
