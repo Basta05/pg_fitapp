@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pg_fit — Cíle & Pokrok</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div id="sidebarMount"></div>
+
+<main class="main-content">
+  <div id="alertContainer"></div>
+
+  <div class="page-header">
+    <h2 class="mb-0">Cíle & Pokrok</h2>
+    <div class="d-flex gap-2">
+      <a href="goal_form.html" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Nový cíl
+      </a>
+      <a href="body_metrics_form.html" class="btn btn-outline-primary">
+        <i class="bi bi-graph-up"></i> Přidat míry
+      </a>
+    </div>
+  </div>
+
+  <!-- Goals -->
+  <h5 class="mb-3">Moje cíle</h5>
+  <div id="goalsContainer" class="mb-4">
+    <p class="text-muted">Načítání...</p>
+  </div>
+
+  <!-- Recent body metrics -->
+  <div class="stat-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0">Tělesné míry (posledních 10)</h5>
+      <a href="body_metrics.html" class="btn btn-outline-primary btn-sm">Zobrazit vše</a>
+    </div>
+    <div id="metricsTable">
+      <p class="text-muted">Načítání...</p>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/eel.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/goals.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', initGoalsPage);
+</script>
+</body>
+</html>

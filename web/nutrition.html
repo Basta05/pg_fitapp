@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pg_fit — Výživa</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div id="sidebarMount"></div>
+
+<main class="main-content">
+  <div id="alertContainer"></div>
+
+  <div class="page-header">
+    <div>
+      <h2 class="mb-0">Nutriční makra</h2>
+      <input type="date" class="form-control form-control-sm mt-1" id="dateInput" style="width:160px" />
+    </div>
+    <div class="d-flex gap-2">
+      <a href="food_log_add.html" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Přidat jídlo
+      </a>
+      <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#goalModal">
+        <i class="bi bi-sliders"></i> Cíle
+      </button>
+    </div>
+  </div>
+
+  <!-- Macro cards -->
+  <div class="row g-3 mb-4" id="macroCards">
+    <p class="text-muted col-12">Načítání...</p>
+  </div>
+
+  <!-- Food log -->
+  <div id="foodLogContainer">
+    <p class="text-muted">Načítání...</p>
+  </div>
+</main>
+
+<!-- Nutrition Goal Modal -->
+<div class="modal fade" id="goalModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Denní cíle maker</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="goalForm" onsubmit="submitGoalForm(event)">
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-6">
+              <label class="form-label">Kalorie (kcal)</label>
+              <input type="number" class="form-control" id="gCalories" min="500" required />
+            </div>
+            <div class="col-6">
+              <label class="form-label">Bílkoviny (g)</label>
+              <input type="number" class="form-control" id="gProtein" min="0" required />
+            </div>
+            <div class="col-6">
+              <label class="form-label">Sacharidy (g)</label>
+              <input type="number" class="form-control" id="gCarbs" min="0" required />
+            </div>
+            <div class="col-6">
+              <label class="form-label">Tuky (g)</label>
+              <input type="number" class="form-control" id="gFat" min="0" required />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Zrušit</button>
+          <button type="submit" class="btn btn-primary"><i class="bi bi-check2"></i> Uložit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/eel.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/nutrition.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', initNutritionPage);
+</script>
+</body>
+</html>

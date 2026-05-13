@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pg_fit — Tréninky</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div id="sidebarMount"></div>
+
+<main class="main-content">
+  <div id="alertContainer"></div>
+
+  <div class="page-header">
+    <h2 class="mb-0">Tréninky</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newWorkoutModal">
+      <i class="bi bi-plus-circle"></i> Nový trénink
+    </button>
+  </div>
+
+  <div id="workoutList">
+    <p class="text-muted">Načítání...</p>
+  </div>
+</main>
+
+<!-- New Workout Modal -->
+<div class="modal fade" id="newWorkoutModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nový trénink</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form onsubmit="submitNewWorkout(event)">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Název tréninku</label>
+            <input type="text" class="form-control" id="wName" placeholder="Push Day" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Datum</label>
+            <input type="date" class="form-control" id="wDate" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Poznámka</label>
+            <textarea class="form-control" id="wNotes" rows="2" placeholder="Volitelná poznámka..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Zrušit</button>
+          <button type="submit" class="btn btn-primary"><i class="bi bi-check2"></i> Vytvořit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/eel.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/workouts.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('wDate').value = today();
+    initWorkoutsPage();
+  });
+</script>
+</body>
+</html>

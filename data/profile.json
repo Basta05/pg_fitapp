@@ -1,0 +1,10 @@
+{
+  "name": "Uživatel",
+  "email": "",
+  "gender": "male",
+  "date_of_birth": null,
+  "height_cm": null,
+  "starting_weight_kg": null,
+  "activity_level": "moderate",
+  "bio": ""
+}

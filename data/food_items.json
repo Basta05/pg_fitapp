@@ -1,0 +1,17 @@
+[
+  {"id": 1,  "name": "Kuřecí prso",         "calories_per_100g": 165, "protein_per_100g": 31.0, "carbs_per_100g": 0.0,  "fat_per_100g": 3.6,  "is_custom": false},
+  {"id": 2,  "name": "Rýže vařená",          "calories_per_100g": 130, "protein_per_100g": 2.7,  "carbs_per_100g": 28.0, "fat_per_100g": 0.3,  "is_custom": false},
+  {"id": 3,  "name": "Vejce (celé)",          "calories_per_100g": 155, "protein_per_100g": 13.0, "carbs_per_100g": 1.1,  "fat_per_100g": 11.0, "is_custom": false},
+  {"id": 4,  "name": "Ovesné vločky",         "calories_per_100g": 371, "protein_per_100g": 13.0, "carbs_per_100g": 56.0, "fat_per_100g": 7.0,  "is_custom": false},
+  {"id": 5,  "name": "Banán",                 "calories_per_100g": 89,  "protein_per_100g": 1.1,  "carbs_per_100g": 23.0, "fat_per_100g": 0.3,  "is_custom": false},
+  {"id": 6,  "name": "Losos",                 "calories_per_100g": 208, "protein_per_100g": 20.0, "carbs_per_100g": 0.0,  "fat_per_100g": 13.0, "is_custom": false},
+  {"id": 7,  "name": "Tvaroh (nízkotučný)",   "calories_per_100g": 73,  "protein_per_100g": 12.0, "carbs_per_100g": 4.0,  "fat_per_100g": 0.4,  "is_custom": false},
+  {"id": 8,  "name": "Brambory vařené",       "calories_per_100g": 77,  "protein_per_100g": 2.0,  "carbs_per_100g": 17.0, "fat_per_100g": 0.1,  "is_custom": false},
+  {"id": 9,  "name": "Těstoviny vařené",      "calories_per_100g": 131, "protein_per_100g": 5.0,  "carbs_per_100g": 25.0, "fat_per_100g": 1.1,  "is_custom": false},
+  {"id": 10, "name": "Olivový olej",          "calories_per_100g": 884, "protein_per_100g": 0.0,  "carbs_per_100g": 0.0,  "fat_per_100g": 100.0,"is_custom": false},
+  {"id": 11, "name": "Mandle",                "calories_per_100g": 579, "protein_per_100g": 21.0, "carbs_per_100g": 22.0, "fat_per_100g": 50.0, "is_custom": false},
+  {"id": 12, "name": "Řecký jogurt (2%)",     "calories_per_100g": 97,  "protein_per_100g": 9.0,  "carbs_per_100g": 4.0,  "fat_per_100g": 5.0,  "is_custom": false},
+  {"id": 13, "name": "Avokádo",               "calories_per_100g": 160, "protein_per_100g": 2.0,  "carbs_per_100g": 9.0,  "fat_per_100g": 15.0, "is_custom": false},
+  {"id": 14, "name": "Hovězí mleté (10%)",    "calories_per_100g": 175, "protein_per_100g": 23.0, "carbs_per_100g": 0.0,  "fat_per_100g": 9.0,  "is_custom": false},
+  {"id": 15, "name": "Celozrnný chléb",       "calories_per_100g": 247, "protein_per_100g": 9.0,  "carbs_per_100g": 41.0, "fat_per_100g": 3.4,  "is_custom": false}
+]

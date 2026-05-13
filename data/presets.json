@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Push Day",
+    "description": "Trénink zaměřený na tlakové svaly — hrudník, ramena, triceps.",
+    "muscle_focus": "chest",
+    "difficulty": "intermediate",
+    "exercise_ids": [1, 2, 7, 11]
+  },
+  {
+    "id": 2,
+    "name": "Pull Day",
+    "description": "Trénink zaměřený na tahové svaly — záda, biceps.",
+    "muscle_focus": "back",
+    "difficulty": "intermediate",
+    "exercise_ids": [4, 5, 6, 9]
+  },
+  {
+    "id": 3,
+    "name": "Leg Day",
+    "description": "Komplexní trénink dolní části těla — nohy a hýždě.",
+    "muscle_focus": "legs",
+    "difficulty": "intermediate",
+    "exercise_ids": [13, 14, 15, 16]
+  },
+  {
+    "id": 4,
+    "name": "Full Body (Začátečník)",
+    "description": "Jednoduchý celotělový trénink bez vybavení. Ideální pro začátečníky.",
+    "muscle_focus": "full_body",
+    "difficulty": "beginner",
+    "exercise_ids": [3, 13, 18, 22]
+  },
+  {
+    "id": 5,
+    "name": "Kardio Session",
+    "description": "Krátká kardio jednotka pro spalování kalorií a zlepšení kondice.",
+    "muscle_focus": "cardio",
+    "difficulty": "beginner",
+    "exercise_ids": [20, 21, 22]
+  }
+]

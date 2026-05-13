@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pg_fit — Profil</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div id="sidebarMount"></div>
+
+<main class="main-content">
+  <div id="alertContainer"></div>
+
+  <div class="page-header">
+    <h2 class="mb-0">Profil & Nastavení</h2>
+  </div>
+
+  <div class="row g-4">
+    <!-- Profile summary -->
+    <div class="col-md-4">
+      <div class="stat-card text-center">
+        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto mb-3"
+             style="width:80px;height:80px;font-size:2rem;color:var(--primary)">
+          <i class="bi bi-person-circle"></i>
+        </div>
+        <h4 id="pName">—</h4>
+        <p class="text-muted small mb-1" id="pEmail">—</p>
+        <p class="text-muted small" id="pBio">—</p>
+        <hr>
+        <div class="d-flex justify-content-around text-center">
+          <div>
+            <div class="fw-bold" id="pHeight">—</div>
+            <div class="text-muted small">Výška</div>
+          </div>
+          <div>
+            <div class="fw-bold" id="pStartWeight">—</div>
+            <div class="text-muted small">Počáteční váha</div>
+          </div>
+          <div>
+            <div class="fw-bold" id="pActivity">—</div>
+            <div class="text-muted small">Aktivita</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit form -->
+    <div class="col-md-8">
+      <div class="stat-card">
+        <h5 class="mb-4">Upravit profil</h5>
+        <form id="profileForm" onsubmit="saveProfile(event)">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Jméno</label>
+              <input type="text" class="form-control" id="fName" placeholder="Tvoje jméno" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">E-mail</label>
+              <input type="email" class="form-control" id="fEmail" placeholder="email@example.com" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Pohlaví</label>
+              <select class="form-select" id="fGender">
+                <option value="male">Muž</option>
+                <option value="female">Žena</option>
+                <option value="other">Jiné</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Datum narození</label>
+              <input type="date" class="form-control" id="fDob" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Výška (cm)</label>
+              <input type="number" class="form-control" id="fHeight" min="100" max="250" placeholder="180" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Počáteční váha (kg)</label>
+              <input type="number" class="form-control" id="fStartWeight" step="0.1" min="30" placeholder="80" />
+            </div>
+            <div class="col-12">
+              <label class="form-label">Úroveň aktivity</label>
+              <select class="form-select" id="fActivity">
+                <option value="sedentary">Sedavý</option>
+                <option value="light">Lehká aktivita</option>
+                <option value="moderate">Střední aktivita</option>
+                <option value="active">Aktivní</option>
+                <option value="very_active">Velmi aktivní</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Bio</label>
+              <textarea class="form-control" id="fBio" rows="2" placeholder="Pár slov o sobě..."></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-4">
+            <i class="bi bi-check2"></i> Uložit změny
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/eel.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  const ACTIVITY_LABELS = { sedentary:'Sedavý', light:'Lehká', moderate:'Střední', active:'Aktivní', very_active:'Velmi aktivní' };
+
+  async function loadProfile() {
+    const p = await eel.get_profile()();
+    // Summary
+    document.getElementById('pName').textContent        = p.name || '—';
+    document.getElementById('pEmail').textContent       = p.email || '—';
+    document.getElementById('pBio').textContent         = p.bio || '—';
+    document.getElementById('pHeight').textContent      = p.height_cm ? p.height_cm + ' cm' : '—';
+    document.getElementById('pStartWeight').textContent = p.starting_weight_kg ? p.starting_weight_kg + ' kg' : '—';
+    document.getElementById('pActivity').textContent    = ACTIVITY_LABELS[p.activity_level] || p.activity_level;
+    // Form
+    document.getElementById('fName').value        = p.name || '';
+    document.getElementById('fEmail').value       = p.email || '';
+    document.getElementById('fGender').value      = p.gender || 'male';
+    document.getElementById('fDob').value         = p.date_of_birth || '';
+    document.getElementById('fHeight').value      = p.height_cm || '';
+    document.getElementById('fStartWeight').value = p.starting_weight_kg || '';
+    document.getElementById('fActivity').value    = p.activity_level || 'moderate';
+    document.getElementById('fBio').value         = p.bio || '';
+  }
+
+  async function saveProfile(event) {
+    event.preventDefault();
+    const p = await eel.update_profile(
+      document.getElementById('fName').value,
+      document.getElementById('fEmail').value,
+      document.getElementById('fGender').value,
+      document.getElementById('fDob').value,
+      document.getElementById('fHeight').value,
+      document.getElementById('fStartWeight').value,
+      document.getElementById('fActivity').value,
+      document.getElementById('fBio').value,
+    )();
+    document.getElementById('pName').textContent        = p.name;
+    document.getElementById('pEmail').textContent       = p.email || '—';
+    document.getElementById('pBio').textContent         = p.bio || '—';
+    document.getElementById('pHeight').textContent      = p.height_cm ? p.height_cm + ' cm' : '—';
+    document.getElementById('pStartWeight').textContent = p.starting_weight_kg ? p.starting_weight_kg + ' kg' : '—';
+    document.getElementById('pActivity').textContent    = ACTIVITY_LABELS[p.activity_level] || p.activity_level;
+    showAlert('Profil uložen.');
+  }
+
+  document.addEventListener('DOMContentLoaded', loadProfile);
+</script>
+</body>
+</html>

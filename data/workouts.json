@@ -1,0 +1,79 @@
+[
+  {
+    "id": 1,
+    "name": "Ruce",
+    "date": "2026-05-13",
+    "duration_minutes": null,
+    "workout_type": "custom",
+    "notes": "",
+    "created_at": "2026-05-13T08:51:21.141916",
+    "exercises": [
+      {
+        "id": 1,
+        "exercise_id": 10,
+        "order": 0,
+        "sets": [
+          {
+            "id": 1,
+            "set_number": 1,
+            "reps": 12,
+            "weight_kg": 10.0,
+            "duration_seconds": null,
+            "notes": ""
+          },
+          {
+            "id": 2,
+            "set_number": 2,
+            "reps": 10,
+            "weight_kg": 10.0,
+            "duration_seconds": null,
+            "notes": ""
+          },
+          {
+            "id": 3,
+            "set_number": 3,
+            "reps": null,
+            "weight_kg": null,
+            "duration_seconds": null,
+            "notes": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Push Day",
+    "date": "2026-05-13",
+    "duration_minutes": null,
+    "workout_type": "preset",
+    "notes": "",
+    "created_at": "2026-05-13T08:52:23.059685",
+    "exercises": [
+      {
+        "id": 2,
+        "exercise_id": 1,
+        "order": 0,
+        "sets": []
+      },
+      {
+        "id": 3,
+        "exercise_id": 2,
+        "order": 1,
+        "sets": []
+      },
+      {
+        "id": 4,
+        "exercise_id": 7,
+        "order": 2,
+        "sets": []
+      },
+      {
+        "id": 5,
+        "exercise_id": 11,
+        "order": 3,
+        "sets": []
+      }
+    ]
+  }
+]

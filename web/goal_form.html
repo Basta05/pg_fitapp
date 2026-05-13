@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pg_fit — Nový cíl</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div id="sidebarMount"></div>
+
+<main class="main-content">
+  <div id="alertContainer"></div>
+
+  <div class="page-header">
+    <div>
+      <a href="goals.html" class="text-muted small"><i class="bi bi-arrow-left"></i> Zpět na cíle</a>
+      <h2 class="mb-0 mt-1">Nový cíl</h2>
+    </div>
+  </div>
+
+  <div class="stat-card" style="max-width: 560px">
+    <form onsubmit="submitGoal(event)">
+      <div class="mb-3">
+        <label class="form-label">Typ cíle *</label>
+        <select class="form-select" name="goalType" required>
+          <option value="">— Vyber typ —</option>
+          <option value="lose_weight">Zhubnout</option>
+          <option value="gain_muscle">Nabrat svaly</option>
+          <option value="maintain">Udržet váhu</option>
+          <option value="improve_endurance">Zlepšit kondici</option>
+          <option value="other">Jiné</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Popis</label>
+        <textarea class="form-control" name="goalDesc" rows="3" placeholder="Popište svůj cíl..."></textarea>
+      </div>
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <label class="form-label">Cílová váha (kg)</label>
+          <input type="number" class="form-control" name="goalWeight" step="0.1" min="30" placeholder="75" />
+        </div>
+        <div class="col-6">
+          <label class="form-label">Termín</label>
+          <input type="date" class="form-control" name="goalDate" />
+        </div>
+      </div>
+      <div class="d-flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-check2"></i> Přidat cíl</button>
+        <a href="goals.html" class="btn btn-outline-secondary">Zrušit</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/eel.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/goals.js"></script>
+</body>
+</html>

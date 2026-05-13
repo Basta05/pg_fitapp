@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pg_fit — Tělesné míry</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div id="sidebarMount"></div>
+
+<main class="main-content">
+  <div id="alertContainer"></div>
+
+  <div class="page-header">
+    <h2 class="mb-0">Tělesné míry</h2>
+    <a href="body_metrics_form.html" class="btn btn-primary">
+      <i class="bi bi-plus-circle"></i> Přidat záznam
+    </a>
+  </div>
+
+  <div class="stat-card">
+    <div id="metricsContainer">
+      <p class="text-muted">Načítání...</p>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/eel.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/goals.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', initBodyMetricsPage);
+</script>
+</body>
+</html>

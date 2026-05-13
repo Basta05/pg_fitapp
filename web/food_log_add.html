@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pg_fit — Přidat jídlo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div id="sidebarMount"></div>
+
+<main class="main-content">
+  <div id="alertContainer"></div>
+
+  <div class="page-header">
+    <div>
+      <a href="nutrition.html" class="text-muted small"><i class="bi bi-arrow-left"></i> Zpět na výživu</a>
+      <h2 class="mb-0 mt-1">Přidat jídlo</h2>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="stat-card mb-4">
+    <label class="form-label"><i class="bi bi-search"></i> Hledat potravinu</label>
+    <input type="text" class="form-control" id="foodSearch" placeholder="Kuřecí prso, rýže..." />
+  </div>
+
+  <!-- Food items list -->
+  <div id="foodItemList">
+    <p class="text-muted">Načítání...</p>
+  </div>
+
+  <!-- Add form (shown after selection) -->
+  <div id="addForm" class="stat-card mt-4" style="display:none">
+    <h5 class="mb-1" id="selectedFoodName">—</h5>
+    <p class="text-muted small mb-3" id="selectedFoodKcal"></p>
+    <form onsubmit="submitAddFood(event)">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Datum</label>
+          <input type="date" class="form-control" id="addDate" required />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Jídlo</label>
+          <select class="form-select" id="addMeal" required>
+            <option value="breakfast">Snídaně</option>
+            <option value="lunch">Oběd</option>
+            <option value="dinner">Večeře</option>
+            <option value="snack">Svačina</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Množství (g)</label>
+          <input type="number" class="form-control" id="addAmount" min="1" value="100" required />
+        </div>
+      </div>
+      <div class="mt-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Přidat</button>
+        <a href="nutrition.html" class="btn btn-outline-secondary">Zrušit</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/eel.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/nutrition.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', initFoodLogAddPage);
+</script>
+</body>
+</html>

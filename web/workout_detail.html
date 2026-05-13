@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pg_fit — Detail tréninku</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div id="sidebarMount"></div>
+
+<main class="main-content">
+  <div id="alertContainer"></div>
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <a href="workouts.html" class="text-muted small"><i class="bi bi-arrow-left"></i> Zpět na tréninky</a>
+      <h2 class="mb-0 mt-1" id="dWorkoutName">...</h2>
+      <div class="text-muted small">
+        <i class="bi bi-calendar3"></i> <span id="dWorkoutDate"></span>
+        <span class="ms-3"><i class="bi bi-activity"></i> <span id="dExerciseCount">0</span> cviků</span>
+      </div>
+    </div>
+    <button class="btn btn-outline-danger" id="deleteWorkoutBtn">
+      <i class="bi bi-trash"></i> Smazat trénink
+    </button>
+  </div>
+
+  <!-- Notes -->
+  <div class="stat-card mb-4">
+    <div class="text-muted small"><i class="bi bi-journal-text"></i> Poznámka</div>
+    <div id="dWorkoutNotes" class="mt-1">—</div>
+  </div>
+
+  <!-- Exercises -->
+  <div id="exercisesContainer">
+    <p class="text-muted">Načítání...</p>
+  </div>
+
+  <!-- Add exercise -->
+  <div class="stat-card mt-4">
+    <h6 class="mb-3"><i class="bi bi-plus-circle"></i> Přidat cvik</h6>
+    <form class="d-flex gap-2" onsubmit="submitAddExercise(event)">
+      <select class="form-select" id="exerciseSelect" required>
+        <option value="">— Načítání cviků... —</option>
+      </select>
+      <button type="submit" class="btn btn-primary text-nowrap">
+        <i class="bi bi-plus"></i> Přidat
+      </button>
+    </form>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/eel.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/workouts.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', initDetailPage);
+</script>
+</body>
+</html>

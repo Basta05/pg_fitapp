@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pg_fit — Přidat tělesné míry</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div id="sidebarMount"></div>
+
+<main class="main-content">
+  <div id="alertContainer"></div>
+
+  <div class="page-header">
+    <div>
+      <a href="body_metrics.html" class="text-muted small"><i class="bi bi-arrow-left"></i> Zpět na míry</a>
+      <h2 class="mb-0 mt-1">Přidat tělesné míry</h2>
+      <p class="text-muted mb-0">Všechna pole kromě data jsou volitelná.</p>
+    </div>
+  </div>
+
+  <div class="stat-card" style="max-width: 640px">
+    <form onsubmit="submitBodyMetrics(event)">
+      <div class="mb-3">
+        <label class="form-label">Datum *</label>
+        <input type="date" class="form-control" name="bmDate" id="bmDate" required />
+      </div>
+
+      <h6 class="text-muted mb-3 mt-4">Základní</h6>
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <label class="form-label">Váha (kg)</label>
+          <input type="number" class="form-control" name="bmWeight" id="bmWeight" step="0.1" min="30" placeholder="80.5" />
+        </div>
+        <div class="col-6">
+          <label class="form-label">Tělesný tuk (%)</label>
+          <input type="number" class="form-control" name="bmFat" id="bmFat" step="0.1" min="3" max="60" placeholder="18" />
+        </div>
+      </div>
+
+      <h6 class="text-muted mb-3 mt-4">Obvody (cm)</h6>
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <label class="form-label">Hrudník</label>
+          <input type="number" class="form-control" name="bmChest" id="bmChest" step="0.1" min="50" placeholder="100" />
+        </div>
+        <div class="col-6">
+          <label class="form-label">Pas</label>
+          <input type="number" class="form-control" name="bmWaist" id="bmWaist" step="0.1" min="40" placeholder="85" />
+        </div>
+        <div class="col-6">
+          <label class="form-label">Boky</label>
+          <input type="number" class="form-control" name="bmHips" id="bmHips" step="0.1" min="50" placeholder="95" />
+        </div>
+        <div class="col-6">
+          <label class="form-label">Bicep</label>
+          <input type="number" class="form-control" name="bmBicep" id="bmBicep" step="0.1" min="20" placeholder="35" />
+        </div>
+        <div class="col-6">
+          <label class="form-label">Stehno</label>
+          <input type="number" class="form-control" name="bmThigh" id="bmThigh" step="0.1" min="30" placeholder="55" />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Poznámka</label>
+        <textarea class="form-control" name="bmNotes" id="bmNotes" rows="2" placeholder="Volitelná poznámka..."></textarea>
+      </div>
+
+      <div class="d-flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-check2"></i> Uložit</button>
+        <a href="body_metrics.html" class="btn btn-outline-secondary">Zrušit</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/eel.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/goals.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', initBodyMetricsForm);
+</script>
+</body>
+</html>
